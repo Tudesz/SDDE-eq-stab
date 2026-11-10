@@ -77,7 +77,7 @@ end
 % figure(); plot(omA,wA)
 
 
-%% "Analytic" stability boundary for the lambda = 0 case
+%% Semi-analytic stability boundary found tracking det(Psi)=0
 
 % Initial guess for lambda ~ 0
 p1 = par; p1(2:3) = [0.1 1.3]; tau1 = 2*pi/p1(3); u0 = [p1 tau1];
@@ -131,5 +131,5 @@ lnames = sprintfc('$M$=%i',M);
 legend([{'mean stab.','mean-square stab.'} lnames]); axis([0.1 2 0 0.8])
 % % title(sprintf('$\\zeta$ = %0.2f, $\\sigma$ = %0.1f',par(1),par(4)))
 fontsize(16,"points")
-exportgraphics(gcf,'plots/turning_map.png','Resolution',400)
+% exportgraphics(gcf,'plots/turning_map.png','Resolution',400)
 

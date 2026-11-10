@@ -2,7 +2,7 @@ clear; close all; clc;
 %% Computational cost of second-moment stability in a linear, scalar SDDE
 % dx(t) = (a*x(t)+b*x(t-tau) + c)*dt + 
 %   (alpha*x(t)+beta*x(t-tau) + gamma)*dWt 
-addpath(genpath('numerical methods'))
+addpath(genpath('../numerical methods'))
 
 
 %% System definition
@@ -108,11 +108,11 @@ for i = 1:length(Ms)
 end
 
 % save data
-save('data/scalar_cbar_time.mat','a_time','x_time','f_time',...
+save('../data/scalar_cbar_time.mat','a_time','x_time','f_time',...
     'err_f','err_x','ne','Ms','c_time')
 
 %% Comparison plots
-load('data/scalar_cbar_time.mat')
+load('../data/scalar_cbar_time.mat')
 figure(); 
 loglog(Ms,err_f,Ms,err_x);
 xlabel('$M$'); ylabel('err($\bar{C}$)');
@@ -185,11 +185,11 @@ for i = 1:length(Ms)
 end
 
 % save data
-save('data/scalar_eig_time.mat','a_time','x_time','f_time','y_time',...
+save('../data/scalar_eig_time.mat','a_time','x_time','f_time','y_time',...
     'err_f','err_x','err_y','ne','Ms')
 
 %% Comparison plots
-load('data/scalar_eig_time.mat')
+load('../data/scalar_eig_time.mat')
 figure(); 
 loglog(Ms,err_f,Ms,err_x,Ms,err_y);
 xlabel('$M$'); ylabel('err($\bar{C}$)'); 

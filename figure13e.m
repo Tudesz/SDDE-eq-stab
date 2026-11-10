@@ -6,7 +6,7 @@ clear; close all; clc;
 addpath(genpath('numerical methods'))
 
 % COCO dependency
-run("C:\Users\iklodi\Documents\MATLAB\coco_2025January28\startup.m");
+% run("<COCO\startup.m>");
 
 
 %% System definition
@@ -19,7 +19,7 @@ gamma = @(p) [0; p(3)];
 
 % Default parameter vector
 par = [5.2 3 0.1 5 0.3]; % [p d sigma k tau]
-tau = par(5); d = 2;
+d = 2;
 
 % stochastic system definition
 sysDDE.f = @(x,xd,t,p) A(p)*x + B(p)*squeeze(xd(:,:,1));  % drift term
@@ -45,7 +45,7 @@ tau_lims = [0.25 0.65];  % parameter limits of d
 fc = @(f) @(p,d,u) deal(d,f(u));
 
 
-%% Track the lambda = 0 stability boundary using continuation
+%% Track the det(Psi) = 0 stability boundary using continuation
 
 % COCO compatible function wrapper (u = [lambda; p0])
 fch_eq = @(~,d,u) deal(d,sdde_char_sn(sysLDDE,u(5),u));
@@ -71,7 +71,7 @@ bd1 = coco(prob,'sdosc_sn1_kd',[],2,...
 %   'Color', 'black', 'Marker', '.', 'MarkerSize', 15, ...
 %   'MarkerEdgeColor', 'black', 'MarkerFaceColor', 'black')
 
-% 3d COCO output
+% 3D COCO output
 figure('Position',[400 200 600 500]);
 atlas = coco_bd_read('sdosc_sn1_kd', 'atlas');
 plot_atlas_kd(atlas.charts,3); hold on
@@ -104,4 +104,4 @@ lighting gouraud; material shiny; box on; grid on;
 annotation(gcf, 'textbox', [0, 0.9, 0.05, 0.05], ...
     'String', '(e)','LineStyle', 'none','Interpreter','latex');
 fontsize(20,"points");
-exportgraphics(gcf,'plots/stoch_osc_3D.png','Resolution',400)
+% exportgraphics(gcf,'plots/stoch_osc_3D.png','Resolution',400)

@@ -2,7 +2,7 @@ clear; close all; clc;
 %% Simulate the covariance of a linear, scalar SDDE
 % dx(t) = (a*x(t)+b*x(t-tau) + c)*dt + 
 %   (alpha*x(t)+beta*x(t-tau) + gamma)*dWt 
-addpath(genpath('numerical methods'))
+addpath(genpath('../numerical methods'))
 
 
 %% System definition
@@ -71,4 +71,4 @@ end
 if ~exist('data','dir')
     mkdir('data')
 end
-save('data/scalar_corr_A.mat','theta','C_stat','C_sim')
+save('../data/scalar_corr_A.mat','theta','C_stat','C_sim')

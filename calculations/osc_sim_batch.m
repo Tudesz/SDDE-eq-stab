@@ -3,7 +3,7 @@ clear; close all; clc;
 % dx(t) = (A*x(t) + B*x(t-tau))*dt + (alpha*x(t)+beta*x(t-tau)+gamma)*dW(t)
 % fodor2023: A = [0 1; k 0]; B = [0 0; -p -d];
 %   alpha = [0 0; 0 0]; beta = -sigma*B; gamma = [0; sigma]
-addpath(genpath('numerical methods'))
+addpath(genpath('../numerical methods'))
 
 
 %% System definition
@@ -78,8 +78,5 @@ end
 % xlabel('$\vartheta$'); ylabel('$\bar{\phi}(\vartheta)$'); hold off
 
 %% Save simulation data
-if ~exist('data','dir')
-    mkdir('data')
-end
-save('data/osc_corr.mat','theta','C_stat','C_sim')
+save('../data/osc_corr.mat','theta','C_stat','C_sim')
 

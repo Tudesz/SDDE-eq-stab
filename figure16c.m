@@ -132,4 +132,4 @@ annotation(gcf, 'textbox', [0.0, 0.92, 0.05, 0.05], ...
     'String', '(c)','LineStyle', 'none','Interpreter','latex');
 title('$\zeta = 0.05$, $\sigma = 1$')
 fontsize(16,"points"); axis([0.1 2 0 0.57])
-exportgraphics(gcf,'plots/turning_map_var.png','Resolution',400)
+% exportgraphics(gcf,'plots/turning_map_var.png','Resolution',400)

@@ -3,10 +3,10 @@ clear; close all; clc;
 % dx(t) = (a*x(t) + b*x(t-tau))*dt + (alpha*x(t)+beta*x(t-tau)+gamma)*dW(t)
 % a = [0 1; -1-w -2*zeta]; b = [0 0; w 0]; alpha = [0 0; -sigma 0]; 
 % beta = [0 0; sigma 0]; gamma = [0; sigma]; tau = 2*pi/omega
-addpath(genpath('numerical methods'))
+addpath(genpath('../numerical methods'))
 
 % COCO dependency
-run("C:\Users\iklodi\Documents\MATLAB\coco_2025January28\startup.m");
+% run("<COCO\startup.m>");
 
 
 %% System definition
@@ -63,18 +63,15 @@ fprintf('   calculation time %0.3f s\n',rest_cO2.calc_time);
 
 
 %% Save stability map data
-if ~exist('data','dir')
-    mkdir('data')
-end
-save('data/sturn_stab_map_a.mat','rest_cO1','rest_cO2')
+save('../data/sturn_stab_map_a.mat','rest_cO1','rest_cO2')
 
 %% Plot results
-load('data/sturn_stab_map_a.mat','rest_cO1','rest_cO2')
+load('../data/sturn_stab_map_a.mat','rest_cO1','rest_cO2')
 thm1.lspec = {'r-', 'LineWidth', 1.5};
 figure('Position',[400 400 800 350]); box on;
 plot_stab_lambda(rest_cO1,1);  hold on;
 plot_stab_lambda(rest_cO2,1);  hold on;
-coco_plot_bd(thm1,'sturn_psn1','omega','w'); hold off
+coco_plot_bd(thm1,'../data/sturn_psn1','omega','w'); hold off
 xlim([0.1 2.0])
 
 % figure(); 

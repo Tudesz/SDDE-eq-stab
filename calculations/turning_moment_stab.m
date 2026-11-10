@@ -3,11 +3,10 @@ clear; close all; clc;
 % dx(t) = (a*x(t) + b*x(t-tau))*dt + (alpha*x(t)+beta*x(t-tau)+gamma)*dW(t)
 % a = [0 1; -1-w -2*zeta]; b = [0 0; w 0]; alpha = [0 0; -sigma 0]; 
 % beta = [0 0; sigma 0]; gamma = [0; sigma]; tau = 2*pi/omega
-addpath(genpath('numerical methods'))
+addpath(genpath('../numerical methods'))
 
 % COCO dependency
-run("C:\Users\iklodi\Documents\MATLAB\coco_2025January28\startup.m");
-
+% run("<COCO\startup.m>");
 
 %% System definition
 
@@ -73,7 +72,7 @@ w_lims = [0 0.8];       % parameter limits of w
 % if ~exist('data','dir')
 %     mkdir('data')
 % end
-% save('data/sturn_stab_map.mat','rest_cO1','rest_cO2')
+% save('../data/sturn_stab_map.mat','rest_cO1','rest_cO2')
 
 
 %% Second moment stability in DDE form exploiting symmetry
@@ -99,24 +98,21 @@ for i = 1:length(M)
 end
 
 %% Save stability map data
-if ~exist('data','dir')
-    mkdir('data')
-end
-save('data/sturn_stab_map_red.mat','rest_cO1','rest_cO2')
+save('../data/sturn_stab_map_red.mat','rest_cO1','rest_cO2')
 
 
 %% Plot results
 
 thm1.lspec = {'r-', 'LineWidth', 1.5};
 figure('Position',[400 400 800 350]); box on;
-coco_plot_bd(thm1,'sturn_psn1','omega','w'); hold on;
+coco_plot_bd(thm1,'../data/sturn_psn1','omega','w'); hold on;
 clrmp = orderedcolors("gem");
-% load('data/sturn_stab_map.mat','rest_cO1','rest_cO2')
+% load('../data/sturn_stab_map.mat','rest_cO1','rest_cO2')
 % for i = 1:length(rest_cO1)
 %     plot_stab_lim(rest_cO1{i},1,{'--','LineColor',clrmp(i,:)});
 %     plot_stab_lim(rest_cO2{i},1,{'--','LineColor',clrmp(i,:)});
 % end
-load('data/sturn_stab_map_red.mat','rest_cO1','rest_cO2')
+load('../data/sturn_stab_map_red.mat','rest_cO1','rest_cO2')
 for i = 1:length(rest_cO1)
     plot_stab_lim(rest_cO1{i},1,{':','LineColor',clrmp(i,:)});
     plot_stab_lim(rest_cO2{i},1,{':','LineColor',clrmp(i,:)});

@@ -20,7 +20,7 @@ sysLDDE.Gd = @(t,p) p(5);   % delayed diffusion term
 sysLDDE.g = @(t,p) p(6);    % constant diffusion term
 
 
-%% Find stationary correlation functions
+%% Plot stationary correlation functions
 
 na = 500; M = 10;
 as = linspace(-5,5,na);
@@ -75,7 +75,7 @@ xlabel('$a$'); ylabel('$\chi$, $\rho(\mathbf{F})$')
 annotation(gcf, 'textbox', [0.47, 0.5, 0.05, 0.05], ...
     'String', '(c)','LineStyle', 'none','Interpreter','latex');
  fontsize(16,"points")
-exportgraphics(gcf,'plots/scalar_stat_ina2.png','Resolution',400)
+% exportgraphics(gcf,'plots/scalar_stat_ina2.png','Resolution',400)
 
 
 

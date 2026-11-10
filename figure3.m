@@ -4,7 +4,8 @@ clear; close all; clc;
 %   (alpha*x(t)+beta*x(t-tau) + gamma)*dWt 
 addpath(genpath('numerical methods'))
 
-% RUN "scalar_moment_stab.m" BEFORE THIS SCIPT!
+% RUN "calculations/scalar_moment_stab.m" BEFORE THIS SCIPT!
+
 
 %% Analytic stability bounds
 
@@ -73,7 +74,7 @@ for i = 1:6
     face1.ColorType = 'truecoloralpha';
     face1.ColorData = uint8([255; 0; 0; 20]); 
     fname = sprintf('plots/scalar_map_anal%i.png',i);
-    exportgraphics(gcf,fname,'Resolution',400)
+    % exportgraphics(gcf,fname,'Resolution',400)
 end
 
 

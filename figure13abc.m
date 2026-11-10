@@ -71,21 +71,21 @@ for i = 1:length(tu)
 end
 
 
-%% Find the stationary distribution
+%% Discretized stationary distribution
 
 % solution mean: (a+b)*x - c = 0
 x_mean = -(sysLDDE.F(0,par) + sysLDDE.Fd{1}(0,par))\sysLDDE.f(0,par);
 xt_mean = @(t) kron(ones(M2,1),x_mean);
 
 % second moment: dC/dt = 0, JC*C = bC
-JC = pde_cov_jac(0,sysLDDE,par,tau,M2);
-bC = pde_cov_const(0,xt_mean,sysLDDE,par,tau,M2);
-C_mean = reshape(-JC\reshape(bC,[],1),d*M2,d*M2) - xt_mean(0) * xt_mean(0).';
+% JC = pde_cov_jac(0,sysLDDE,par,tau,M2);
+% bC = pde_cov_const(0,xt_mean,sysLDDE,par,tau,M2);
+% C_mean = reshape(-JC\reshape(bC,[],1),d*M2,d*M2) - xt_mean(0) * xt_mean(0).';
 
 % correaltaiotn function: dPhi/dt = 0, JPh*Ph = bPh
-JPh = pde_corr_jac(0,sysLDDE,par,tau,M2);
-bPh = pde_corr_const(0,xt_mean,sysLDDE,par,tau,M2);
-Ph_mean = reshape(-JPh\bPh,d^2,M2);
+% JPh = pde_corr_jac(0,sysLDDE,par,tau,M2);
+% bPh = pde_corr_const(0,xt_mean,sysLDDE,par,tau,M2);
+% Ph_mean = reshape(-JPh\bPh,d^2,M2);
 % figure(); plot(theta2,C_mean(end,2:d:end),theta2,Ph_mean(end,:),':')
 
 
@@ -123,6 +123,7 @@ end
 sv_mean = sqrt(Ca_ext(end,end));
 sx_mean = sqrt(Ca_ext(end-1,end-1));
 
+
 %% Combined plot of results
 
 % figure('Position',[400 400 800 400]);
@@ -159,7 +160,7 @@ ax2.Units = 'normalized'; pos = ax2.Position;
 annotation(gcf, 'textbox', [0, pos(2)+pos(4), 0.05, 0.05], ...
     'String', '(b)','LineStyle', 'none','Interpreter','latex');
 fontsize(20,"points")
-exportgraphics(gcf,'plots/osc_stationary1.png','Resolution',400)
+% exportgraphics(gcf,'plots/osc_stationary1.png','Resolution',400)
 
 % % ax3 = axes('Position',[0.62 0.17 0.3347 0.75]);  box on; hold on
 % figure('Position',[400 400 600 500]); ax3 = axes();  box on; hold on
@@ -236,7 +237,7 @@ ax3.Units = 'normalized'; pos = ax3.Position;
 annotation(gcf, 'textbox', [0, pos(2)+pos(4), 0.05, 0.05], ...
     'String', '(c)','LineStyle', 'none','Interpreter','latex');
 fontsize(20,"points")
-exportgraphics(gcf,'plots/osc_stationary2.png','Resolution',400)
+% exportgraphics(gcf,'plots/osc_stationary2.png','Resolution',400)
 
 % exportgraphics(gcf,'osc_stationary.png','Resolution',400)
 

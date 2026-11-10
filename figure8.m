@@ -74,5 +74,5 @@ scatter(-0.4,-0.9,'kx','LineWidth',2);
 text(1.05,0.-1.75,'D','Color','k');
 scatter(1,-1.5,'kx','LineWidth',2); 
 fontsize(16,'points')
-exportgraphics(gcf,'plots/scalar_stab_comp.png','Resolution',400)
+% exportgraphics(gcf,'plots/scalar_stab_comp.png','Resolution',400)
 

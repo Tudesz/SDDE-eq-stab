@@ -1,5 +1,5 @@
 clear; close all; clc;
-%% Simulate the covariance of a stochastic turning process
+%% Simulate trajectories of a stochastic turning process
 % dx(t) = (a*x(t) + b*x(t-tau))*dt + (alpha*x(t)+beta*x(t-tau)+gamma)*dW(t)
 % a = [0 1; -1-w -2*zeta]; b = [0 0; w 0]; alpha = [0 0; -sigma 0]; 
 % beta = [0 0; sigma 0]; gamma = [0; sigma]; tau = 2*pi/omega
@@ -15,7 +15,7 @@ alpha = @(p) [0 0; -p(4)*p(2) 0];
 beta = @(p) [0 0; p(4)*p(2) 0];
 gamma = @(p) [0; p(4)*p(2)];
 
-% Default parameter vector
+% Default parameter vector (C: first- and second-moment unstable)
 par = [0.05 0.2 0.6 1.0]; % [zeta w omega sigma]
 tau = 2*pi/par(3);
 
@@ -90,4 +90,4 @@ annotation(gcf, 'textbox', [0, pos(2)+pos(4), 0.04, 0.04], ...
     'String', '(C)','LineStyle', 'none','Interpreter','latex');
 ylim([-40 40]); grid on;
 fontsize(16,"points")
-exportgraphics(gcf,'plots/turning_sim_c.png','Resolution',400)
+% exportgraphics(gcf,'plots/turning_sim_c.png','Resolution',400)

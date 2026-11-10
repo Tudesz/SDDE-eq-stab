@@ -79,7 +79,7 @@ CUTe = cov(squeeze(U(1,end-3/sim.dt:end,:)).');
 thCe = linspace(-3,0,size(CUTe,1));
 
 
-%% 2D PDE solution of the second moment "function"
+%% 1D PDE solution of the correlation function
 
 % deterministic solution
 solO = ode45(@(t,y) sysODE.f(y,t,par),[0 sim.T],yhist(theta));
@@ -87,70 +87,16 @@ xref = @(t) deval(solO,t); xrefT = xref(sim.T);
 % figure(); plot(solO.x,solO.y)
 
 % Time integration
-C0 = reshape(yhist(theta).'*yhist(theta),[],1);
-cfun = @(t,y) pde_cov(t,y,xref,sysLDDE,par,tau);
-solC = ode45(cfun,[0 sim.T],C0);
-CD = reshape(solC.y(:,end),M,M) - xrefT * xrefT.';
-tc = solC.x; Ct =zeros(M^2,length(tc));
-for i = 1:length(tc)
-    Ct(:,i) = solC.y(:,i) - reshape(xref(tc(i))*xref(tc(i)).',[],1);
-end
-% figure(); plot(tc,Ct,tc,Ct(end,:),'r')
-
-
-%% 1D PDE solution of the correlation function
-% 
-% % Time integration
-% Phi0 = @(t) reshape(yhist(t)*reshape(yhist(t+theta),1,[]),[],1);
-% pfun = @(t,y,Z) pde_corr(t,y,Z,xref,sysLDDE,par,tau);
-% solP = dde23(pfun,-theta(1:end-1),Phi0,[0 sim.T]);
-% Phi1 = deval(solP,sim.T+theta);
-% CP = cov_interp(reshape(Phi1.',M,M),theta) - xrefT * xrefT.';
-% x_end  = @(x) x(end,:);
-% Phi = solP.y - x_end(xref(solP.x)) .* xref(solP.x);
-
-
-%% Find the stationary distribution
-
-% solution mean: (a+b)*x - c = 0
-x_mean = -sysLDDE.f(0,par) / (sysLDDE.F(0,par) + sysLDDE.Fd(0,par));
-xt_mean = @(t) x_mean*ones(M,1);
-
-% second moment: dC/dt = 0, JC*bC = 0
-bC = pde_cov_const(sim.T,xt_mean,sysLDDE,par,tau,M);
-JC = pde_cov_jac(0,sysLDDE,par,tau,M);
-C_mean = reshape(-JC\reshape(bC,[],1),M,M) - xt_mean(0) * xt_mean(0).';
-s_mean = sqrt(C_mean(end,end));
+Phi0 = @(t) reshape(yhist(t)*reshape(yhist(t+theta),1,[]),[],1);
+pfun = @(t,y,Z) pde_corr(t,y,Z,xref,sysLDDE,par,tau);
+solP = dde23(pfun,-theta(1:end-1),Phi0,[0 sim.T]);
+x_end  = @(x) x(end,:);
+Phi = solP.y - x_end(xref(solP.x)) .* xref(solP.x);
 
 
 %% Analytic solution of the stationary distribution
-% For now, restricted to c = 0, x_mean = 0!
-% 
-% % BVP solution on the [-\tau 0] interval
-% phi_a = corr_scalar_asol(sysLDDE,tau,par);
-% [th_m, phi_m] = corr_stat_asol(sysLDDE,tau,par);
-% % figure(); plot(th_m,phi_a(th_m),th_m,phi_m,':')
-% 
-% % DDE IVP solution on the theta<-\tau domain
-% y0 = @(t) phi_a(-t-tau(1)); tau_max= 3;
-% sol = dde23(@(t,y,Z)corr_stat_dde(t,y,Z,sysLDDE,par,x_mean),tau,...
-%     y0,[0 tau_max-tau(1)]);
-% phi_n = @(th) deval(sol,-th-tau(1));
-% 
-% % Combine the extended analytic solution
-% Mt = 1000; Ca_ext = zeros(Mt); 
-% theta2 = linspace(-tau_max,0,Mt); 
-% for i = 1:Mt
-%     for j = 1:Mt
-%         th_ij = -abs(theta2(i) - theta2(j));
-%         if th_ij < -tau(1)
-%             Ca_ext(i,j) = phi_n(th_ij);
-%         else
-%             Ca_ext(i,j) = phi_a(th_ij);
-%         end
-%     end
-% end
-% Ca_ext = Ca_ext - x_mean^2;
+phi_a = corr_scalar_asol(sysLDDE,tau,par);
+s_mean = sqrt(phi_a(0));
 
 
 %% Combined plot of results
@@ -171,7 +117,7 @@ annotation(gcf, 'textbox', [0.07, 0.92, 0.05, 0.05], ...
 % legend('mean($x$)','$q_{0.5}(x)$','$q_{0.25,0.75}(x)$')
 
 subplot(1,3,2); box on; hold on; grid on;
-plot(tus,Vtu,'b',tc,Ct(end,:),'r','LineWidth',1.5);
+plot(tus,Vtu,'b',solP.x,Phi(end,:),'r','LineWidth',1.5);
 yline(s_mean^2,'k:','LineWidth',1.5)
 xlabel('$t$'); ylabel('$V[x]$'); ylim([0 2])
 annotation(gcf, 'textbox', [0.35, 0.92, 0.05, 0.05], ...
@@ -201,4 +147,4 @@ annotation(gcf, 'textbox', [0.63, 0.92, 0.05, 0.05], ...
 % annotation(gcf, 'textbox', [0.05, 0.9, 0.05, 0.05], ...
 %     'String', '(B)','LineStyle', 'none','Interpreter','latex');
 fontsize(16,"points")
-exportgraphics(gcf,'plots/scalar_sim_b.png','Resolution',400)
+% exportgraphics(gcf,'plots/scalar_sim_b.png','Resolution',400)

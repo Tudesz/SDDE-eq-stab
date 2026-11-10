@@ -2,7 +2,7 @@ clear; close all; clc;
 %% Simulate the covariance of a linear, scalar SDDE
 % dx(t) = (a*x(t)+b*x(t-tau) + c)*dt + 
 %   (alpha*x(t)+beta*x(t-tau) + gamma)*dWt 
-addpath(genpath('numerical methods'))
+addpath(genpath('../numerical methods'))
 
 
 %% System definition

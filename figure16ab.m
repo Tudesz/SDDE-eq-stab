@@ -136,7 +136,6 @@ end
 %% Plot stability maps
 sigma = [1 1.5 2 2.5];
 rnames1 = sprintfc('sturn_sigma%i_psn1',1:4);
-
 clrmp = orderedcolors("gem");
 figure('Position',[400 400 600 400]); box on; hold on;
 a = area(omA{1}, wA{1}); a.HandleVisibility = 'off';
@@ -154,12 +153,10 @@ annotation(gcf, 'textbox', [0.0, 0.92, 0.05, 0.05], ...
     'String', '(a)','LineStyle', 'none','Interpreter','latex');
 title('$\zeta = 0.05$')
 fontsize(16,"points")
-exportgraphics(gcf,'plots/turning_map_sigma.png','Resolution',400)
+% exportgraphics(gcf,'plots/turning_map_sigma.png','Resolution',400)
 
-%%
 zeta = [0.05 0.1 0.15 0.2];
 rnames2 = sprintfc('sturn_zeta%i_psn1',1:4);
-
 clrmp = orderedcolors("gem");
 figure('Position',[400 400 600 400]); box on; hold on;
 for i = length(zeta):-1:2
@@ -182,4 +179,4 @@ annotation(gcf, 'textbox', [0.0, 0.92, 0.05, 0.05], ...
 legend(lnames); axis([0.1 2 0 1.2])
 title('$\sigma = 1$')
 fontsize(16,"points")
-exportgraphics(gcf,'plots/turning_map_zeta.png','Resolution',400)
+% exportgraphics(gcf,'plots/turning_map_zeta.png','Resolution',400)

@@ -4,9 +4,10 @@ clear; close all; clc;
 %   (alpha*x(t)+beta*x(t-tau) + gamma)*dWt 
 addpath(genpath('numerical methods'))
 
-% RUN "scalar_comp_time.m" BEFORE THIS SCIPT!
+% RUN "calculations/scalar_comp_time.m" BEFORE THIS SCIPT!
 
-%% Preprocess data
+
+%% Preprocess convergence study data
 
 % Evaluation of C
 load('data/scalar_cbar_time.mat','a_time','x_time','f_time',...
@@ -42,7 +43,6 @@ disp(T)
 
 %% Combined plots
 figure('Position',[400 200 600 750]); 
-
 
 ax1 = subplot(3,2,1);
 loglog(Ms,Ffe,'bo-',Ms,Fye,'ro-','LineWidth',1.5); hold on
@@ -116,4 +116,4 @@ annotation(gcf, 'textbox', [0.5, 0.32, 0.05, 0.05], ...
     'String', '(f)','LineStyle', 'none','Interpreter','latex');
 fontsize(16,'points')
 % legend('$\Psi$','$\hat{\mathbf{F}}$','$\Xi$')
-exportgraphics(gcf,'plots/scalar_convergence.png','Resolution',400)
+% exportgraphics(gcf,'plots/scalar_convergence.png','Resolution',400)

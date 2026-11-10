@@ -3,10 +3,10 @@ clear; close all; clc;
 % dx(t) = (a*x(t) + b*x(t-tau))*dt + (alpha*x(t)+beta*x(t-tau)+gamma)*dW(t)
 % a = [0 1; -1-w -2*zeta]; b = [0 0; w 0]; alpha = [0 0; -sigma 0]; 
 % beta = [0 0; sigma 0]; gamma = [0; sigma]; tau = 2*pi/omega
-addpath(genpath('numerical methods'))
+addpath(genpath('../numerical methods'))
 
 % COCO dependency
-run("C:\Users\iklodi\Documents\MATLAB\coco_2025January28\startup.m");
+% run("<COCO\startup.m>");
 
 %% System definition
 
@@ -74,8 +74,8 @@ for i = 1:length(M)
 
     % Initialization
     Mi = M(i); mesh.M = Mi;
-    rname1 = sprintf('sturn_pp1_M%i',M(i));
-    rname2 = sprintf('sturn_pp2_M%i',M(i));
+    rname1 = sprintf('../../data/sturn_pp1_M%i',M(i));
+    rname2 = sprintf('../../data/sturn_pp2_M%i',M(i));
 
     % Initial solution guess at a point where lambda ~ 0
     p2 = par; p2(2:3) = [0.11 0.6]; tau2 = 2*pi/p2(3);
@@ -121,8 +121,8 @@ end
 % for i = 1:length(M)
 %     % Initialization
 %     Mi = M(i);
-%     rname1 = sprintf('sturn_pc1_M%i',M(i));
-%     rname2 = sprintf('sturn_pc2_M%i',M(i));
+%     rname1 = sprintf('../../data/sturn_pc1_M%i',M(i));
+%     rname2 = sprintf('../../data/sturn_pc2_M%i',M(i));
 % 
 %     % Initial solution guess at a point where lambda ~ 0
 %     p2 = par; p2(2:3) = [0.11 0.6]; tau2 = 2*pi/p2(3);
@@ -169,10 +169,10 @@ thm2.lspec = {'--', 'LineWidth', 1.5};
 thm3.lspec = {':', 'LineWidth', 1.5};
 clrmp = orderedcolors("gem");
 figure('Position',[400 400 800 350]); box on; hold on;
-coco_plot_bd(thm1,'sturn_psn1','omega','w');
+coco_plot_bd(thm1,'../data/sturn_psn1','omega','w');
 for Mi = M
-    coco_plot_bd(thm3,sprintf('sturn_pp2_M%i',Mi),'omega','w');
-    coco_plot_bd(thm2,sprintf('sturn_pc2_M%i',Mi),'omega','w');
+    coco_plot_bd(thm3,sprintf('../data/sturn_pp2_M%i',Mi),'omega','w');
+    coco_plot_bd(thm2,sprintf('../data/sturn_pc2_M%i',Mi),'omega','w');
 end
 xlabel('$\tilde{\omega}$'); ylabel('$\tilde{w}$'); hold off
 legend('first moment','second moment'); axis([0.1 2.0 0.0 0.8])

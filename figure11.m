@@ -80,7 +80,7 @@ end
 % CUT = reshape(CUts(:,end),M,M);
 
 
-%% 2D PDE solution of the second moment "function"
+%% 1D PDE solution of the correlation function
 
 % deterministic solution
 solO = ode45(@(t,y) sysODE.f(y,t,par),[0 sim.T],yhist(theta));
@@ -88,15 +88,11 @@ xref = @(t) deval(solO,t); xrefT = xref(sim.T);
 % figure(); plot(solO.x,solO.y)
 
 % Time integration
-C0 = reshape(yhist(theta).'*yhist(theta),[],1);
-cfun = @(t,y) pde_cov(t,y,xref,sysLDDE,par,tau);
-solC = ode45(cfun,[0 sim.T],C0);
-CD = reshape(solC.y(:,end),M,M) - xrefT * xrefT.';
-tc = solC.x; Ct =zeros(M^2,length(tc));
-for i = 1:length(tc)
-    Ct(:,i) = solC.y(:,i) - reshape(xref(tc(i))*xref(tc(i)).',[],1);
-end
-% figure(); plot(tc,Ct,tc,Ct(end,:),'r')
+Phi0 = @(t) reshape(yhist(t)*reshape(yhist(t+theta),1,[]),[],1);
+pfun = @(t,y,Z) pde_corr(t,y,Z,xref,sysLDDE,par,tau);
+solP = dde23(pfun,-theta(1:end-1),Phi0,[0 sim.T]);
+x_end  = @(x) x(end,:);
+Phi = solP.y - x_end(xref(solP.x)) .* xref(solP.x);
 
 
 %% Combined plot of results
@@ -117,7 +113,7 @@ annotation(gcf, 'textbox', [0.05, 0.92, 0.05, 0.05], ...
 % axis([0 sim.T -20 20])
 
 subplot(1,2,2); box on; hold on; grid on;
-plot(tus,Vtu,'b',tc,Ct(end,:),'r','LineWidth',1.5);
+plot(tus,Vtu,'b',solP.x,Phi(end,:),'r','LineWidth',1.5);
 xlabel('$t$'); ylabel('$V[x]$')
 annotation(gcf, 'textbox', [0.47, 0.92, 0.05, 0.05], ...
     'String', '(b)','LineStyle', 'none','Interpreter','latex');
@@ -126,4 +122,4 @@ axis([0 sim.T 0 200])
 % annotation(gcf, 'textbox', [0.05, 0.9, 0.05, 0.05], ...
 %     'String', '(C)','LineStyle', 'none','Interpreter','latex');
 fontsize(16,"points")
-exportgraphics(gcf,'plots/scalar_sim_c.png','Resolution',400)
+% exportgraphics(gcf,'plots/scalar_sim_c.png','Resolution',400)

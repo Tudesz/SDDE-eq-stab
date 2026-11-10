@@ -4,17 +4,14 @@ clear; close all; clc;
 %   (alpha*x(t)+beta*x(t-tau) + gamma)*dWt 
 addpath(genpath('numerical methods'))
 
-% RUN "scalar_moment_stab.m" BEFORE THIS SCIPT!
-
-% COCO dependency
-run("C:\Users\iklodi\Documents\MATLAB\coco_2025January28\startup.m");
+% RUN "calculations/scalar_moment_stab.m" BEFORE THIS SCIPT!
 
 
 %% System definition
 
 % Default parameter vector
 par = [0 0 0 -1.5 0.5 1 1]; % [a b c alpha beta gamma tau]
-tau = par(7); d = 1;
+d = 1;
 
 % stochastic system definition
 sysDDE.f = @(x,xd,t,p) p(1)*x(1,:) + p(2)*xd(1,:,1) + p(3); % drift term
@@ -32,26 +29,6 @@ sysLDDE.g = @(t,p) p(6);    % constant diffusion term
 M = 10; % Chebyshev mesh dimensions
 a_lims = [-15 15];  % parameter limits of a
 b_lims = [-15 15];  % parameter limits of b
-
-% COCO compatible functions wrappers
-fc = @(f) @(p,d,u) deal(d,f(u));
-
-
-%% "Analytic" stability boundary for the lambda = 0 case
-
-% COCO compatible function wrapper (u = p0)
-fch_eq = fc(@(u) sdde_char_sn(sysLDDE,tau,u));
-pnames = {'a' 'b' 'c' 'alpha' 'beta' 'gamma' 'tau'};
-p0 = par; p0(1:2) = [-1 0];
-
-% Create the COCO compatible continuation problem
-prob = coco_prob();
-prob = coco_add_func(prob,'ch_eq',fch_eq,[],'zero','u0',p0);
-uidx = coco_get_func_data(prob, 'ch_eq', 'uidx');
-prob = coco_add_pars(prob,'pars',uidx,pnames);
-
-% Run COCO with b fixed
-bd1 = coco(prob,'lsdde_psn1',[],1,{'a','b'},a_lims);
 
 
 %% Closed form stability boundaries
@@ -78,7 +55,8 @@ for i = 1:size(Ceq,1)
 end
 
 
-%%
+%% Plot stability map
+
 load('data/scalar_stab_map.mat','rest_m')
 figure('Position',[400 200 600 400]); ax1 = gca;
 plot_stab_lambda(rest_m,1); hold on
@@ -112,5 +90,5 @@ face1.ColorData = uint8([0; 0; 255; 20]);
 % face2 = h2.FacePrims(1);
 % face2.ColorType = 'truecoloralpha';
 % face2.ColorData = uint8([255; 0; 0; 20]);
-exportgraphics(gcf,'plots/scalar_map_anal.png','Resolution',400)
+% exportgraphics(gcf,'plots/scalar_map_anal.png','Resolution',400)
 

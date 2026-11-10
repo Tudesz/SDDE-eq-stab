@@ -2,7 +2,7 @@ clear; close all; clc;
 %% First and second-moment stability maps of a linear, scalar SDDE
 % dx(t) = (a*x(t)+b*x(t-tau) + c)*dt + 
 %   (alpha*x(t)+beta*x(t-tau) + gamma)*dWt 
-addpath(genpath('numerical methods'))
+addpath(genpath('../numerical methods'))
 
 
 %% System definition
@@ -57,8 +57,5 @@ figure();  plot_stab_lambda(rest_cD,2);
 
 
 %% Export data
-if ~exist('data','dir')
-    mkdir('data')
-end
-save('data/scalar_first_stab_map.mat','rest_m','rest_cD')
+save('../data/scalar_first_stab_map.mat','rest_m','rest_cD')
 

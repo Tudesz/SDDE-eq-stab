@@ -7,7 +7,8 @@ clear; close all; clc;
 addpath(genpath('numerical methods'))
 
 % COCO dependency
-run("C:\Users\iklodi\Documents\MATLAB\coco_2025January28\startup.m");
+% run("<COCO\startup.m>");
+
 
 %% System definition
 
@@ -82,7 +83,7 @@ end
 save('data/osc_stab_map.mat','rest_cD','rest_m')
 
 
-%% Track the lambda = 0 stability boundary using continuation
+%% Track the det(Psi) = 0 stability boundary using continuation
 
 % COCO compatible function wrapper (u = p0)
 fch_eq = fc(@(u) sdde_char_sn(sysLDDE,tau,u));
@@ -97,6 +98,7 @@ prob = coco_add_pars(prob,'pars',uidx,pnames);
 % Run COCO with both p and d released
 prob = coco_set(prob,'cont','ItMX',[0 100]);
 bd1 = coco(prob,'sdosc_psn1',[],1,{'p','d'},p_lims);
+
 
 %% Form a surrogate DDE to find second moment stability (Buckwar 2013)
 
@@ -168,4 +170,4 @@ annotation(gcf, 'textbox', [0, pos(2)+pos(4), 0.04, 0.04], ...
     'String', '(d)','LineStyle', 'none','Interpreter','latex',...
     'HorizontalAlignment','left');
 fontsize(20,"points")
-exportgraphics(gcf,'plots/osc_map_comp.png','Resolution',400)
+% exportgraphics(gcf,'plots/osc_map_comp.png','Resolution',400)

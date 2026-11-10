@@ -5,7 +5,7 @@ clear; close all; clc;
 addpath(genpath('numerical methods'))
 
 % COCO dependency
-run("C:\Users\iklodi\Documents\MATLAB\coco_2025January28\startup.m");
+% run("<COCO\startup.m>");
 
 
 %% System definition
@@ -76,7 +76,7 @@ end
 save('data/scalar_stab_map_atau.mat','rest_cD','rest_m')
 
 
-%% "Analytic" stability boundary for the lambda = 0 case
+%% Semi-analytic second-moment stability boundary
 
 % COCO compatible function wrapper (u = p0)
 fch_eq = fc(@(u) sdde_char_sn(sysLDDE,u(7),u));
@@ -113,5 +113,5 @@ ts2 = -bs.^2/2 + 1/4*sqrt(4*bs.^4+2*(2-bs.^2).^2); % Eq.(68) from (Haskovec 2016
 plot(bs,ts2,'g--',bs,ts1,'r--','LineWidth',2);
 xlabel('$\beta$'); ylabel('$\tau$')
 axis([0 2 0 2]); fontsize(16,"points")
-exportgraphics(gcf,'plots/scalar_map_atau.png','Resolution',400)
+% exportgraphics(gcf,'plots/scalar_map_atau.png','Resolution',400)
 
